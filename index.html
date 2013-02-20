@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<script src="js/jquery-1.9.0.min.js"></script>
+	<script src="js/underscore-min.js"></script>
+	<script src="js/backbone.js"></script>
+	<script src="js/backbone-localStorage.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/expense.js"></script>
+
+	<script>
+
+
+	$(document).ready(function(){
+		transactionCollection = new TransactionCollection()
+		transactionCollection.fetch()
+		var listView = new ListView({
+			el:$('.container'),
+			transactionCollection: transactionCollection
+		})
+	})
+
+
+	</script>
+</head>
+<body >
+	<div class="container">
+	</div>
+
+	<script type="text/template" id="listView"><div>
+		<h1>
+			Expense Calculator
+		</h1>
+		<div>
+			<h3>
+				Transactions
+			</h3>
+			<div class="row">
+				<div class="span8">
+					<table class="table table-striped">
+						<thead>
+							<tr><th>Type</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+				</div>
+				<div class="span2">
+					<button class="btn btn-primary addButton">Add</button>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<h3>
+				Total
+			</h3>
+			<div class="totals">
+
+			</div>
+		</div>
+
+	</div>
+	</script>
+
+	<script type="text/template" id="modalForm"><form class ="form form-horizontal">
+			<div class="control-group">
+				
+				<label class="control-label">Transation type</label>
+			    <div class="controls">
+			    	<label class="radio">
+					  <input type="radio" name="type" value="expense" checked>
+					  Expense
+					</label>
+					<label class="radio">
+					  <input type="radio" name="type" value="deposit">
+					  Deposit 
+					</label>
+			    </div>
+				
+			</div>
+		
+
+
+			<div class="control-group">
+			    <label class="control-label">Description</label>
+			    <div class="controls">
+			    	<textarea name="description"></textarea>
+			    </div>
+			 </div>
+
+			 <div class="control-group">
+			    <label class="control-label">Category</label>
+			    <div class="controls">
+			    	<select name="category">
+			    		<option value ="Food">Food</option>
+			    		<option value ="Drink">Drink</option> 
+			    		<option value ="Entertainment">Entertainment</option> 
+			    		<option value ="Paychecks">Paychecks</option> 
+			    	</select>
+			    </div>
+			 </div>
+
+
+			 <div class="control-group">
+			    <label class="control-label">Amount</label>
+			    <div class="controls">
+			    	<input type="text" name="amount"/>
+			    </div>
+			 </div>
+		</form>
+	</script>
+
+	<script type="text/template" id="modal_template"><div class="modal fade" id="myModal">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal">X</button>
+            <h3><%= header %></h3>
+          </div>
+          <div class="modal-body">
+            <div class="modalBody"></div>
+          </div>
+          <div class="modal-footer footer">
+          </div>
+        </div>
+        </script>
+</body>
+</html>
