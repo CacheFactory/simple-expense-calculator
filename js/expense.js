@@ -45,8 +45,14 @@ var TransactionView= Backbone.View.extend({
 	},
 	submit:function(){
 		var values=$(this.el).find('form').serializeObject()
-		values.amount=parseInt(values.amount,10)
-		this.model.set(values).save()
+		values.amount=parseFloat(values.amount,10)
+		if(values.amount>0){
+			this.model.set(values).save()
+			return true
+		}else{
+			return false
+		}
+		
 	}
 })
 
@@ -77,7 +83,7 @@ var ListView=Backbone.View.extend({
 	},
 	addTransaction:function(){
 		var self = this
-		var footer=$('<div><a href="#" class="btn add btn-primary" data-dismiss="modal">Save</a><a href="#" class="btn" data-dismiss="modal">Close</a></div>');
+		var footer=$('<div><a href="#" class="btn add btn-primary">Save</a><a href="#" class="btn" data-dismiss="modal">Close</a></div>');
 		var html=$('<div></div>')
 		var modal=showModalView(html,'Add Transaction',footer)
 		var model = new Transaction()
@@ -87,12 +93,20 @@ var ListView=Backbone.View.extend({
 			model:model
 		})
 		
-		footer.find('.add').click(function(){
-			transactionView.submit()
-			self.options.transactionCollection.add(model)
-			self.render()
-		})
+		var submitFunction=function(){
+			if(transactionView.submit()){
+				modal.modal('hide')
+				self.options.transactionCollection.add(model)
+				self.render()
+			}else{
+				alert('The ammount is invalid')
+			}
+		}
 
+		footer.find('.add').bind('click',function(event){
+			submitFunction()	
+		})
+	
 	},
 	findTotal:function(){
 		var value = this.options.transactionCollection.reduce(function(num,trans){
